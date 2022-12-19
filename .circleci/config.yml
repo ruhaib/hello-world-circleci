@@ -21,6 +21,7 @@ jobs:
     docker:
       -   image: circleci/node:13.8.0
     steps:
+      - checkout
       - run: echo $PWD
       - run: echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
       - run:
