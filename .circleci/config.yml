@@ -25,7 +25,7 @@ jobs:
     steps:
       - run:
           name: "Say World"
-          command: "echo , World! and msg: " + $GIT_COMMIT_DESC
+          command: "echo , World! and msg:  + $GIT_COMMIT_DESC"
 
 
 # Invoke jobs via workflows
