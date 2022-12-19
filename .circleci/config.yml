@@ -2,16 +2,20 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands:
+  commit_message:
+    steps:
+      - checkout
+      - run:
+          name: echo commit message
+          command: |
+            export COMMIT_MESSAGE=$(git log --format=oneline -n 1 ${CIRCLE_SHA1})
+            echo World! and msg:  + $COMMIT_MESSAGE
+
 jobs:
   print_hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: circleci/node:13.8.0
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - run:
           name: "Say hello"
@@ -21,15 +25,9 @@ jobs:
     docker:
       -   image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run: export COMMIT_MESSAGE=$(git log --format=oneline -n 1 ${CIRCLE_SHA1})
-      - run:
-          name: "Say World"
-          command: "echo , World! and msg:  + $COMMIT_MESSAGE"
+      - commit_message
 
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-world-workflow:
     jobs:
