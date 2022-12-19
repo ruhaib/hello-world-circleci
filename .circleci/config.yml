@@ -20,10 +20,12 @@ jobs:
   print_world:
     docker:
       -   image: circleci/node:13.8.0
+    environment:
+      GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
     steps:
       - run:
           name: "Say World"
-          command: "echo , World!"
+          command: "echo , World! and msg: " + << GIT_COMMIT_DESC >>
 
 
 # Invoke jobs via workflows
